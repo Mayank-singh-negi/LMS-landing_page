@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+@import url('https://fonts.cdnfonts.com/css/gc-fodax');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +8,7 @@
 @layer base {
   :root {
     --font-sans: 'Inter', sans-serif;
-    --font-display: 'Plus Jakarta Sans', sans-serif;
+    --font-display: 'GC Fodax', 'Plus Jakarta Sans', sans-serif;
 
     --background: 0 0% 100%;
     --foreground: 222 47% 11%;
@@ -129,6 +130,57 @@ html {
 
 .animate-pulse-slow {
   animation: pulse-slow 3s infinite ease-in-out;
+}
+
+/* Wave animations for footer */
+@keyframes wave {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-20px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes wave-slow {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-15px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes wave-slower {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.animate-wave {
+  animation: wave 8s ease-in-out infinite;
+}
+
+.animate-wave-slow {
+  animation: wave-slow 10s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.animate-wave-slower {
+  animation: wave-slower 12s ease-in-out infinite;
+  animation-delay: -4s;
 }
 
 /* Base custom scrollbar */

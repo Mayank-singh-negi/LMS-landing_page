@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { useState } from "react";
+import { Link, useLocation } from "wouter";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { 
   GraduationCap, 
@@ -7,65 +7,23 @@ import {
   BookOpen, 
   BrainCircuit, 
   ArrowRight, 
-  CheckCircle2, 
   Users, 
-  Globe, 
   Zap,
   Menu,
   X,
   Star,
-  Play
+  Github,
+  Linkedin,
+  Mail
 } from "lucide-react";
-import CountUp from "react-countup";
 import Lottie from "lottie-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 import onlineLearningAnimation from "../../Online Learning.json";
-
-// Mock Lottie animation data (Simplified)
-const animationData = {
-  v: "5.5.7",
-  fr: 60,
-  ip: 0,
-  op: 180,
-  w: 500,
-  h: 500,
-  nm: "Learning Animation",
-  ddd: 0,
-  assets: [],
-  layers: [
-    {
-      ddd: 0,
-      ind: 1,
-      ty: 4,
-      nm: "Circle",
-      sr: 1,
-      ks: {
-        o: { a: 0, k: 100 },
-        r: { a: 1, k: [{ t: 0, s: [0] }, { t: 180, s: [360] }] },
-        p: { a: 0, k: [250, 250, 0] },
-        a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [100, 100, 100] }
-      },
-      shapes: [
-        {
-          ty: "gr",
-          it: [
-            { d: 1, ty: "el", s: { a: 0, k: [300, 300] }, p: { a: 0, k: [0, 0] }, nm: "Ellipse Path 1" },
-            { ty: "st", c: { a: 0, k: [0.2, 0.5, 1, 1] }, o: { a: 0, k: 100 }, w: { a: 0, k: 2 }, lc: 1, lj: 1, ml: 4, nm: "Stroke 1" },
-            { ty: "tr", p: { a: 0, k: [0, 0] }, a: { a: 0, k: [0, 0] }, s: { a: 0, k: [100, 100] }, r: { a: 0, k: 0 }, o: { a: 0, k: 100 }, nm: "Transform" }
-          ]
-        }
-      ]
-    }
-  ]
-};
 
 const NAV_LINKS = [
   { name: "Features", href: "#features" },
   { name: "How it Works", href: "#how-it-works" },
-  { name: "Stats", href: "#stats" },
   { name: "Testimonials", href: "#testimonials" },
 ];
 
@@ -134,31 +92,28 @@ function Search({ className }: { className?: string }) {
 }
 
 export default function Landing() {
-  const { user, isLoading } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [, navigate] = useLocation();
   const { scrollY } = useScroll();
   const navBackground = useTransform(scrollY, [0, 50], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.8)"]);
   const navShadow = useTransform(scrollY, [0, 50], ["none", "0 4px 20px -5px rgba(0, 0, 0, 0.05)"]);
 
-  const handleLogin = () => {
-    window.location.href = "/api/login";
-  };
+  const handleLogin = () => navigate("/login");
+  const handleSignup = () => navigate("/signup");
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-primary overflow-x-hidden">
+    <div className="min-h-screen bg-cream text-slate-900 selection:bg-teal/20 selection:text-teal overflow-x-hidden">
       {/* Navbar */}
       <motion.nav
         style={{ backgroundColor: navBackground, boxShadow: navShadow }}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md transition-all duration-300 border-b border-transparent data-[scrolled=true]:border-slate-100"
+        className="absolute top-0 left-0 right-0 z-50 backdrop-blur-md transition-all duration-300 border-b border-transparent data-[scrolled=true]:border-slate-100"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 h-24 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
-              <GraduationCap size={26} />
-            </div>
-            <span className="font-display font-extrabold text-2xl tracking-tight text-slate-900">Learnovora</span>
+          <Link href="/" className="flex items-center gap-3">
+            <img src="/logo.png" alt="Learnovora Logo" className="w-20 h-20" />
+            <span className="font-display font-extrabold text-2xl tracking-tight text-teal">Learnovora</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-10">
@@ -166,7 +121,7 @@ export default function Landing() {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-base font-semibold text-slate-700 hover:text-primary transition-colors"
+                className="text-base font-semibold text-slate-700 hover:text-teal transition-colors"
               >
                 {link.name}
               </a>
@@ -176,8 +131,8 @@ export default function Landing() {
           <div className="hidden md:flex items-center gap-4">
             <Button variant="ghost" onClick={handleLogin} className="font-semibold text-slate-700 h-11 px-5">Log In</Button>
             <Button 
-              onClick={handleLogin}
-              className="bg-primary hover:bg-blue-700 text-white rounded-xl shadow-lg shadow-primary/20 px-6 h-11 font-semibold transition-all hover:-translate-y-0.5"
+              onClick={handleSignup}
+              className="bg-teal hover:bg-teal-dark text-white rounded-xl shadow-lg shadow-teal/20 px-6 h-11 font-semibold transition-all hover:-translate-y-0.5"
             >
               Sign Up Free
             </Button>
@@ -210,7 +165,7 @@ export default function Landing() {
                 ))}
                 <div className="pt-4 border-t border-slate-50 flex flex-col gap-3">
                   <Button variant="outline" onClick={handleLogin} className="w-full h-12 rounded-xl">Log In</Button>
-                  <Button onClick={handleLogin} className="w-full h-12 rounded-xl bg-primary text-white">Get Started</Button>
+                  <Button onClick={handleSignup} className="w-full h-12 rounded-xl bg-teal hover:bg-teal-dark text-white">Get Started</Button>
                 </div>
               </div>
             </motion.div>
@@ -220,7 +175,7 @@ export default function Landing() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 overflow-hidden min-h-[600px]">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-blue-50/50 rounded-full blur-[120px] -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-teal/5 rounded-full blur-[120px] -z-10" />
         
         <div className="max-w-7xl mx-auto px-8 lg:px-16 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -230,21 +185,21 @@ export default function Landing() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="relative z-10"
             >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-primary mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal/10 border border-teal/20 text-teal mb-8">
               <Sparkles size={16} />
               <span className="text-xs font-bold uppercase tracking-wider">AI-Powered EdTech Platform</span>
             </div>
             <h1 className="text-6xl lg:text-7xl xl:text-8xl font-display font-extrabold tracking-tight text-slate-900 leading-[1.1] mb-6">
               Learn Smarter, Not <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-600">Faster with AI.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-teal-light">Faster with AI.</span>
             </h1>
             <p className="text-lg lg:text-xl text-slate-600 mb-10 leading-relaxed">
               Learnovora is the premium LMS that combines high-quality courses with an intelligent AI tutor to help you master any subject in record time.
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-10">
               <Button 
-                onClick={handleLogin}
-                className="w-full sm:w-auto bg-primary hover:bg-blue-700 text-white rounded-xl h-14 px-8 text-base font-bold shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5"
+                onClick={handleSignup}
+                className="w-full sm:w-auto bg-teal hover:bg-teal-dark text-white rounded-xl h-14 px-8 text-base font-bold shadow-lg shadow-teal/20 transition-all hover:-translate-y-0.5"
               >
                 Start Your Journey
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -256,22 +211,6 @@ export default function Landing() {
                 Watch Demo
               </Button>
             </div>
-
-            <div className="flex items-center gap-6">
-              <div className="flex -space-x-3">
-                {[1,2,3,4].map(i => (
-                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-200 overflow-hidden">
-                    <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" />
-                  </div>
-                ))}
-              </div>
-              <div className="text-sm">
-                <div className="flex text-amber-400 mb-0.5">
-                  {[1,2,3,4,5].map(i => <Star key={i} size={14} fill="currentColor" />)}
-                </div>
-                <p className="font-bold text-slate-900">4.9/5 from 2,000+ learners</p>
-              </div>
-            </div>
           </motion.div>
 
           {/* Lottie Animation */}
@@ -279,9 +218,9 @@ export default function Landing() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="hidden lg:flex items-start justify-center -mt-40"
+            className="hidden lg:flex items-start justify-center -mt-32"
           >
-            <div className="w-full max-w-[800px]">
+            <div className="w-full max-w-[1200px] scale-150">
               <Lottie 
                 animationData={onlineLearningAnimation} 
                 loop={true}
@@ -294,7 +233,7 @@ export default function Landing() {
       </section>
 
       {/* Trust Section */}
-      <section className="py-12 border-y border-slate-50 bg-slate-50/30">
+      <section className="py-12 border-y border-cream-dark bg-cream-light">
         <div className="max-w-7xl mx-auto px-6">
           <p className="text-center text-sm font-bold text-slate-400 uppercase tracking-[0.2em] mb-10">Trusted by students from</p>
           <div className="flex flex-wrap justify-center items-center gap-12 lg:gap-24 opacity-40 grayscale">
@@ -321,7 +260,7 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="group p-8 bg-white rounded-[32px] border border-slate-100 hover:border-primary/20 transition-all duration-300 premium-shadow hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2"
+                className="group p-8 bg-white rounded-[32px] border border-cream-dark hover:border-teal/20 transition-all duration-300 premium-shadow hover:shadow-2xl hover:shadow-teal/5 hover:-translate-y-2"
               >
                 <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110", feature.color)}>
                   {feature.icon}
@@ -335,54 +274,52 @@ export default function Landing() {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-24 bg-slate-50/50 relative overflow-hidden">
+      <section id="how-it-works" className="py-24 bg-cream-light relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl">
-            <h2 className="text-4xl lg:text-5xl font-display font-bold text-slate-900 mb-8 leading-tight">Your path to mastery, <br />simplified.</h2>
-            <div className="space-y-12">
-              {STEPS.map((step, idx) => (
-                <motion.div 
-                  key={step.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.2 }}
-                  className="flex gap-6"
-                >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center font-bold text-primary shadow-sm">
-                    {idx + 1}
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-slate-900 mb-3 leading-snug">{step.title}</h4>
-                    <p className="text-slate-600 leading-relaxed text-base">{step.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-4xl lg:text-5xl font-display font-bold text-slate-900 mb-8 leading-tight">Your path to mastery, <br />simplified.</h2>
+              <div className="space-y-12">
+                {STEPS.map((step, idx) => (
+                  <motion.div 
+                    key={step.title}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.2 }}
+                    className="flex gap-6"
+                  >
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white border border-cream-dark flex items-center justify-center font-bold text-teal shadow-sm">
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-slate-900 mb-3 leading-snug">{step.title}</h4>
+                      <p className="text-slate-600 leading-relaxed text-base">{step.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
+
+            {/* Education Illustration */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="hidden lg:flex items-center justify-center w-full"
+            >
+              <img 
+                src="/assets/icons/SVG/5 SCENE.svg" 
+                alt="Students learning together" 
+                className="w-full h-auto scale-125"
+              />
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section id="stats" className="py-24 bg-primary text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-12 text-center relative z-10">
-          {[
-            { label: "Active Learners", value: 15000, suffix: "+" },
-            { label: "Expert Tutors", value: 250, suffix: "+" },
-            { label: "AI Conversations", value: 1.2, suffix: "M" },
-            { label: "Success Rate", value: 98, suffix: "%" }
-          ].map(stat => (
-            <div key={stat.label}>
-              <div className="text-4xl lg:text-6xl font-display font-extrabold mb-2">
-                <CountUp end={stat.value} duration={3} decimals={stat.value % 1 !== 0 ? 1 : 0} />
-                {stat.suffix}
-              </div>
-              <p className="text-blue-100 font-bold uppercase tracking-widest text-xs">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-24 bg-white relative overflow-hidden">
@@ -419,7 +356,7 @@ export default function Landing() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="p-8 bg-white rounded-[32px] border border-slate-100 shadow-xl shadow-slate-200/20"
+                className="p-8 bg-white rounded-[32px] border border-cream-dark shadow-xl shadow-slate-200/20"
               >
                 <div className="flex text-amber-400 mb-6">
                   {[1,2,3,4,5].map(i => <Star key={i} size={16} fill="currentColor" />)}
@@ -440,16 +377,16 @@ export default function Landing() {
 
       {/* CTA Section */}
       <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto relative overflow-hidden rounded-[48px] bg-slate-900 text-white p-12 lg:p-24 text-center">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px]" />
+        <div className="max-w-5xl mx-auto relative overflow-hidden rounded-[48px] bg-teal text-white p-12 lg:p-24 text-center">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-light/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-dark/10 rounded-full blur-[120px]" />
           
           <div className="relative z-10">
             <h2 className="text-4xl lg:text-6xl font-display font-bold mb-8 leading-tight">Ready to unlock your <br />full potential?</h2>
             <p className="text-xl text-blue-100/70 mb-12 max-w-2xl mx-auto">Join the future of learning today. Get started for free and master any skill with the help of AI.</p>
             <Button 
-              onClick={handleLogin}
-              className="bg-white text-slate-900 hover:bg-blue-50 rounded-2xl h-16 px-12 text-lg font-bold shadow-2xl transition-all hover:-translate-y-1 animate-pulse"
+              onClick={handleSignup}
+              className="bg-white text-teal hover:bg-cream rounded-2xl h-16 px-12 text-lg font-bold shadow-2xl transition-all hover:-translate-y-1 animate-pulse"
             >
               Start Learning Now
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -460,59 +397,87 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="py-24 bg-white border-t border-slate-50">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
-          <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5 mb-6">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
-                <GraduationCap size={20} />
-              </div>
-              <span className="font-display font-extrabold text-xl tracking-tight text-slate-900">Learnovora</span>
-            </Link>
-            <p className="text-slate-500 leading-relaxed mb-6">The premium AI-powered learning platform designed for modern creators and students.</p>
-            <div className="flex gap-4">
-              {[1,2,3,4].map(i => (
-                <div key={i} className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:text-primary transition-colors cursor-pointer">
-                  <Globe size={18} />
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <div>
-            <h6 className="font-bold text-slate-900 mb-6 uppercase text-xs tracking-widest">Platform</h6>
-            <ul className="space-y-4">
-              {["Explore Courses", "AI Assistant", "Creator Tools", "Community"].map(item => (
-                <li key={item}><a href="#" className="text-slate-500 hover:text-primary transition-colors">{item}</a></li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h6 className="font-bold text-slate-900 mb-6 uppercase text-xs tracking-widest">Company</h6>
-            <ul className="space-y-4">
-              {["About Us", "Careers", "Blog", "Contact"].map(item => (
-                <li key={item}><a href="#" className="text-slate-500 hover:text-primary transition-colors">{item}</a></li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h6 className="font-bold text-slate-900 mb-6 uppercase text-xs tracking-widest">Support</h6>
-            <ul className="space-y-4">
-              {["Help Center", "Safety Center", "Community Guidelines", "Privacy Policy"].map(item => (
-                <li key={item}><a href="#" className="text-slate-500 hover:text-primary transition-colors">{item}</a></li>
-              ))}
-            </ul>
-          </div>
+      <footer className="relative bg-cream text-white overflow-hidden pt-48">
+        {/* Animated Wavy Teal Background - Extra tall */}
+        <div className="absolute inset-0 z-0">
+          {/* Multiple wave layers for depth - much taller */}
+          <svg className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[150vw] h-[900px] animate-wave" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,450 Q360,350 720,450 T1440,450 L1440,900 L0,900 Z" fill="#004643" opacity="0.9"/>
+          </svg>
+          <svg className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[150vw] h-[900px] animate-wave-slow" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,480 Q360,380 720,480 T1440,480 L1440,900 L0,900 Z" fill="#14b8a6" opacity="0.7"/>
+          </svg>
+          <svg className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[150vw] h-[800px] animate-wave-slower" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,400 Q360,320 720,400 T1440,400 L1440,800 L0,800 Z" fill="#2dd4bf" opacity="0.5"/>
+          </svg>
         </div>
-        
-        <div className="max-w-7xl mx-auto px-6 pt-12 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-slate-400 text-sm font-medium">© 2025 Learnovora Inc. All rights reserved.</p>
-          <div className="flex gap-8 text-sm font-medium text-slate-400">
-            <a href="#" className="hover:text-primary">Terms</a>
-            <a href="#" className="hover:text-primary">Privacy</a>
-            <a href="#" className="hover:text-primary">Cookies</a>
+
+        <div className="relative z-20 w-full px-12 py-16">
+          {/* Links Section */}
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-8 lg:gap-14 mb-12">
+            {/* Logo and Social Icons */}
+            <div className="flex flex-col gap-6">
+              <Link href="/" className="flex items-center gap-2.5">
+                <img src="/logo.png" alt="Learnovora Logo" className="w-16 h-16" />
+                <span className="font-display font-extrabold text-2xl tracking-tight text-white drop-shadow-lg">Learnovora</span>
+              </Link>
+              <p className="text-sm text-white leading-relaxed max-w-xs drop-shadow-md">The premium AI-powered learning platform designed for modern creators and students.</p>
+              
+              <div className="flex gap-4">
+                <a href="mailto:negimayank243@gmail.com" className="w-10 h-10 rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-white hover:text-white transition-colors backdrop-blur-sm" title="Email Us">
+                  <Mail size={18} />
+                </a>
+                <a href="https://github.com/Mayank-singh-negi" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-white hover:text-white transition-colors backdrop-blur-sm" title="GitHub">
+                  <Github size={18} />
+                </a>
+                <a href="https://www.linkedin.com/in/mayank-negi-55712533b/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-white hover:text-white transition-colors backdrop-blur-sm" title="LinkedIn">
+                  <Linkedin size={18} />
+                </a>
+              </div>
+            </div>
+
+            {/* Navigation Links */}
+            <nav className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-12">
+              {/* Platform */}
+              <div>
+                <h4 className="font-bold mb-4 uppercase text-xs tracking-widest text-white drop-shadow-md">Platform</h4>
+                <ul className="space-y-3">
+                  {["Explore Courses", "AI Assistant", "Creator Tools", "Community"].map(item => (
+                    <li key={item}><a href="#" className="text-white/95 hover:text-white transition-colors text-sm drop-shadow-md font-medium">{item}</a></li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Company */}
+              <div>
+                <h4 className="font-bold mb-4 uppercase text-xs tracking-widest text-white drop-shadow-md">Company</h4>
+                <ul className="space-y-3">
+                  {["About Us", "Careers", "Blog", "Contact"].map(item => (
+                    <li key={item}><a href="#" className="text-white/95 hover:text-white transition-colors text-sm drop-shadow-md font-medium">{item}</a></li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Support */}
+              <div>
+                <h4 className="font-bold mb-4 uppercase text-xs tracking-widest text-white drop-shadow-md">Support</h4>
+                <ul className="space-y-3">
+                  {["Help Center", "Safety Center", "Community Guidelines", "Privacy Policy"].map(item => (
+                    <li key={item}><a href="#" className="text-white/95 hover:text-white transition-colors text-sm drop-shadow-md font-medium">{item}</a></li>
+                  ))}
+                </ul>
+              </div>
+            </nav>
+          </div>
+
+          {/* Copyright */}
+          <div className="max-w-7xl mx-auto pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-white/90 text-sm font-medium drop-shadow-md">© 2025 Learnovora Inc. All rights reserved.</p>
+            <div className="flex gap-8 text-sm font-medium text-white/90">
+              <a href="#" className="hover:text-white transition-colors drop-shadow-md">Terms</a>
+              <a href="#" className="hover:text-white transition-colors drop-shadow-md">Privacy</a>
+              <a href="#" className="hover:text-white transition-colors drop-shadow-md">Cookies</a>
+            </div>
           </div>
         </div>
       </footer>
