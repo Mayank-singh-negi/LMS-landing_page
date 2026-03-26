@@ -11,6 +11,17 @@ export default {
         sm: ".1875rem", /* 3px */
       },
       colors: {
+        // Custom theme colors
+        teal: {
+          DEFAULT: '#004643',
+          dark: '#003330',
+          light: '#006661',
+        },
+        cream: {
+          DEFAULT: '#F0EDE5',
+          light: '#F7F5F0',
+          dark: '#E5E1D7',
+        },
         // Flat / base colors (regular buttons)
         background: "hsl(var(--background) / <alpha-value>)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",
