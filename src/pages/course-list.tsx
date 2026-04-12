@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { api } from "@/lib/api";
-import { Search, Star, BookOpen, Users } from "lucide-react";
+import { Search, BookOpen, Users } from "lucide-react";
 
 interface Course {
   _id: string;

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, PlayCircle, FileText, ChevronDown, CheckCircle2,
   BookOpen, Radio, Download, ExternalLink, ChevronRight,
-  SkipForward, Volume2, Maximize2, Loader2,
+  SkipForward, Volume2, Loader2,
 } from "lucide-react";
 import { api } from "@/lib/api";
 

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+﻿﻿import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -1212,47 +1212,6 @@ function CoursesTab({ courses, loading, enrollMsg, onEnroll }: { courses: Course
   );
 }
 
-/* ── Student Material Row (accordion) ────────────────── */
-function StudentMaterialRow({ item, idx }: { item: ContentItem; idx: number }) {
-  const [open, setOpen] = useState(idx === 0);
-  return (
-    <div className="border border-slate-200 rounded-xl overflow-hidden">
-      <button onClick={() => setOpen(p => !p)}
-        className="w-full flex items-center justify-between px-4 py-3.5 bg-slate-50 hover:bg-slate-100 transition-colors text-left">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <motion.svg animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.25 }}
-            className="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </motion.svg>
-          <div className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${item.type === "video" ? "bg-blue-100 text-blue-600" : "bg-red-100 text-red-500"}`}>
-            {item.type === "video" ? <PlayCircle size={13} /> : <FileCheck size={13} />}
-          </div>
-          <span className="font-semibold text-slate-800 text-sm truncate">{item.title || `Material ${idx + 1}`}</span>
-        </div>
-        <span className="text-xs text-slate-400 capitalize shrink-0 ml-3">{item.type}</span>
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-3 bg-white hover:bg-slate-50 transition-colors">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <svg className="w-4 h-4 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                </svg>
-                <span className="text-sm text-slate-700 truncate">{item.title || `Material ${idx + 1}`}</span>
-              </div>
-              <a href={item.url} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-teal text-white text-xs font-semibold rounded-lg hover:bg-teal-dark transition shrink-0 ml-3">
-                <PlayCircle size={12} /> {item.type === "video" ? "Watch" : "Open"}
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
 
 /* ── Enrollments Tab ──────────────────────────────────── */
 function EnrollmentsTab({ enrollments, loading }: { enrollments: Enrollment[]; loading: boolean; }) {
