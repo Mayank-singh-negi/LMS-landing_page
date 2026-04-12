@@ -18,9 +18,9 @@ export default {
           light: '#006661',
         },
         cream: {
-          DEFAULT: '#F0EDE5',
-          light: '#F7F5F0',
-          dark: '#E5E1D7',
+          DEFAULT: '#E8E2D5',
+          light: '#F0EBE0',
+          dark: '#D6CFBF',
         },
         // Flat / base colors (regular buttons)
         background: "hsl(var(--background) / <alpha-value>)",

@@ -19,6 +19,8 @@ async function refreshAccessToken(): Promise<string> {
   if (!res.ok) throw new Error(data.message || "Session expired");
 
   localStorage.setItem("accessToken", data.accessToken);
+  // Save rotated refresh token if returned
+  if (data.refreshToken) localStorage.setItem("refreshToken", data.refreshToken);
   return data.accessToken;
 }
 

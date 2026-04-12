@@ -7,6 +7,7 @@ interface User {
   email: string;
   role: "student" | "teacher" | "admin";
   avatar: string;
+  streak?: number;
 }
 
 interface AuthContextType {
@@ -14,6 +15,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string, role: "student" | "teacher") => Promise<void>;
+  googleLogin: (credential: string) => Promise<void>;
   logout: () => void;
   updateUser: (updated: Partial<User>) => void;
 }
@@ -25,8 +27,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchAndSetUser = async () => {
-    const profile = await api.get<{ id: string; name: string; email: string; role: "student" | "teacher" | "admin"; avatar: string }>("/auth/me");
-    const userData: User = { id: profile.id, name: profile.name, email: profile.email, role: profile.role, avatar: profile.avatar || "" };
+    const profile = await api.get<{ id: string; name: string; email: string; role: "student" | "teacher" | "admin"; avatar: string; streak?: number }>("/auth/me");
+    const userData: User = { id: profile.id, name: profile.name, email: profile.email, role: profile.role, avatar: profile.avatar || "", streak: profile.streak ?? 0 };
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
     return userData;
@@ -38,7 +40,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (stored && token) {
       try { setUser(JSON.parse(stored)); } catch { /* ignore */ }
       fetchAndSetUser()
-        .catch(() => { /* token expired */ })
+        .catch(() => {
+          // Token expired or invalid — clear and let user re-login naturally
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("user");
+          setUser(null);
+        })
         .finally(() => setIsLoading(false));
     } else {
       setIsLoading(false);
@@ -55,6 +63,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (name: string, email: string, password: string, role: "student" | "teacher") => {
     await api.post("/auth/register", { name, email, password, role });
     await login(email, password);
+  };
+
+  const googleLogin = async (credential: string) => {
+    const data = await api.post<{ accessToken: string; refreshToken: string }>("/auth/google", { credential });
+    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("refreshToken", data.refreshToken);
+    await fetchAndSetUser();
   };
 
   const logout = () => {
@@ -74,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, isLoading, login, register, googleLogin, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
