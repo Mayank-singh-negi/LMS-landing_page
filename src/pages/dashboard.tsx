@@ -1794,7 +1794,7 @@ function ReviewsTab({ enrollments, myReviews, loading, reviewForm, setReviewForm
 /* ── Teacher: My Courses Tab ──────────────────────────── */
 interface ContentItem { _id: string; title: string; type: "video" | "pdf"; url: string; }
 
-function CourseStructureRow({ item, idx, courseId, deletingContentId, confirmDeleteId, setConfirmDeleteId, onDelete }: {
+function _CourseStructureRow({ item, idx, courseId, deletingContentId, confirmDeleteId, setConfirmDeleteId, onDelete }: {
   item: ContentItem; idx: number; courseId: string;
   deletingContentId: string | null; confirmDeleteId: string | null;
   setConfirmDeleteId: (id: string | null) => void;
@@ -3044,7 +3044,7 @@ function EmptyState({ icon: Icon, title, desc, children }: { icon: React.Element
   );
 }
 
-function InfoRow({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string; }) {
+function _InfoRow({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string; }) {
   return (
     <div className="flex items-center gap-3 py-3">
       <div className="w-8 h-8 rounded-lg bg-cream flex items-center justify-center shrink-0"><Icon size={15} className="text-slate-500" /></div>
