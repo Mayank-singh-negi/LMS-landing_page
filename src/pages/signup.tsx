@@ -293,7 +293,12 @@ export default function SignupPage() {
 
                   <motion.button whileTap={{ scale: 0.98 }} type="button" onClick={handleSendOtp} disabled={loading}
                     className="w-full flex items-center justify-center gap-2 rounded-xl bg-white text-[#0d0d0d] py-3 font-bold text-sm shadow-lg hover:bg-[#f0f0f0] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-                    {loading ? "Sending OTP..." : "Send OTP"}
+                    {loading ? (
+                      <span className="flex items-center gap-2">
+                        <span className="w-4 h-4 border-2 border-[#0d0d0d] border-t-transparent rounded-full animate-spin" />
+                        Sending OTP... (may take ~30s)
+                      </span>
+                    ) : "Send OTP"}
                     {!loading && <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>}
                   </motion.button>
                 </motion.div>
