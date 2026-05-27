@@ -33,7 +33,7 @@ export default function SignupPage() {
       setGLoading(true);
       setApiError("");
       try {
-        await googleLogin(tokenResponse.access_token);
+        await googleLogin(tokenResponse.access_token, role);
         navigate("/dashboard");
       } catch (err: unknown) {
         setApiError(err instanceof Error ? err.message : "Google signup failed");
